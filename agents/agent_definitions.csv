@@ -329,3 +329,147 @@ Business Data:
 }","Development Agent,
 Documentation Agent,
 Context Management Agent"
+Development,Generates implementation code following architectural decisions and coding standards,"JSON format:
+{
+  codingStandards: {},
+  patterns: [],
+  testRequirements: {},
+  maxChunkSize: number,
+  formatRules: {}
+}","JSON format:
+{
+  taskId: string,
+  architecturalContext: {},
+  codeContext: {
+    dependencies: [],
+    existingCode: {},
+    interfaces: []
+  }
+}","Instruction Data:
+{
+  ""codingStandards"": {
+    ""language"": ""TypeScript"",
+    ""style"": ""Airbnb"",
+    ""maxComplexity"": 10,
+    ""namingConventions"": {
+      ""class"": ""PascalCase"",
+      ""method"": ""camelCase"",
+      ""constant"": ""UPPER_CASE""
+    }
+  },
+  ""patterns"": [
+    ""repository"",
+    ""dependency-injection"",
+    ""factory""
+  ],
+  ""testRequirements"": {
+    ""coverage"": 80,
+    ""types"": [""unit"", ""integration""],
+    ""frameworks"": [""jest"", ""supertest""]
+  },
+  ""maxChunkSize"": 500,
+  ""formatRules"": {
+    ""indentation"": ""spaces"",
+    ""maxLineLength"": 80,
+    ""trailingComma"": ""es5""
+  }
+}
+
+Business Data:
+{
+  ""taskId"": ""CART-2"",
+  ""architecturalContext"": {
+    ""pattern"": ""Event-Driven Cart Updates"",
+    ""interfaces"": [
+      {
+        ""name"": ""CartCommandAPI"",
+        ""type"": ""REST"",
+        ""operations"": [""add"", ""remove"", ""update""]
+      }
+    ]
+  },
+  ""codeContext"": {
+    ""dependencies"": [
+      ""@nestjs/common"",
+      ""@nestjs/microservices"",
+      ""@types/node""
+    ],
+    ""existingCode"": {
+      ""models"": [""Cart.ts"", ""CartItem.ts""],
+      ""services"": [""CartService.ts""]
+    },
+    ""interfaces"": [
+      ""ICartRepository"",
+      ""ICartEventPublisher""
+    ]
+  }
+}","1. Parse architectural context
+2. Analyze code dependencies
+3. Apply coding standards
+4. Generate implementation
+5. Add tests
+6. Format output","JSON format:
+{
+  implementation: {
+    files: [{
+      path: string,
+      content: string,
+      type: string
+    }],
+    tests: [{
+      path: string,
+      content: string,
+      type: string
+    }]
+  },
+  metrics: {
+    complexity: number,
+    coverage: number,
+    lintResults: []
+  }
+}","Output:
+{
+  ""implementation"": {
+    ""files"": [
+      {
+        ""path"": ""src/cart/controllers/cart.controller.ts"",
+        ""content"": ""import { Controller, Post, Body } from '@nestjs/common';
+import { CartService } from '../services/cart.service';
+...
+@Controller('cart')
+export class CartController {
+  constructor(private readonly cartService: CartService) {}
+...
+}"",
+        ""type"": ""controller""
+      },
+      {
+        ""path"": ""src/cart/services/cart.service.ts"",
+        ""content"": ""..."",
+        ""type"": ""service""
+      }
+    ],
+    ""tests"": [
+      {
+        ""path"": ""src/cart/controllers/cart.controller.spec.ts"",
+        ""content"": ""import { Test } from '@nestjs/testing';
+import { CartController } from './cart.controller';
+...
+describe('CartController', () => {
+..."",
+        ""type"": ""unit""
+      }
+    ]
+  },
+  ""metrics"": {
+    ""complexity"": 8,
+    ""coverage"": 85,
+    ""lintResults"": [
+      {
+        ""rule"": ""max-lines"",
+        ""status"": ""pass""
+      }
+    ]
+  }
+}","Quality Assurance Agent,
+Documentation Agent"
