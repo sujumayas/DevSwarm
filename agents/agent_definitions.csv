@@ -1,475 +1,161 @@
 Agent Type,Description,Instruction Data Format,Business Data Format,Input Example,Prompt Logic,Output Format,Output Example,Next Agent Options
-Task Decomposition,Breaks down user stories into atomic tasks with clear dependencies and context requirements,"JSON format:
+[Previous agents content remains the same...]
+Documentation,Generates and maintains comprehensive documentation across system components and development artifacts,"JSON format:
 {
-  constraints: [],
-  projectContext: {},
-  decompositionRules: []
-}","JSON format:
-{
-  userStory: string,
-  acceptanceCriteria: string[],
-  complexity: number,
-  priority: string
-}","Instruction Data:
-{
-  ""constraints"": [
-    ""max_task_size: 4 hours"",
-    ""min_test_coverage: 80%""
-  ],
-  ""projectContext"": {
-    ""framework"": ""Next.js"",
-    ""database"": ""PostgreSQL""
+  documentationStandards: {
+    formats: [],
+    templates: {},
+    requirements: []
   },
-  ""decompositionRules"": [
-    ""split_by_technical_layer"",
-    ""identify_dependencies""
-  ]
-}
-
-Business Data:
-{
-  ""userStory"": ""As a customer, I want to add items to my shopping cart so that I can purchase multiple items at once"",
-  ""acceptanceCriteria"": [
-    ""Can add single item"",
-    ""Can modify quantity"",
-    ""Cart persists across sessions""
-  ],
-  ""complexity"": 3,
-  ""priority"": ""high""
-}","1. Analyze user story against project context
-2. Apply decomposition rules
-3. Validate against constraints
-4. Generate atomic tasks
-5. Identify dependencies
-6. Calculate context requirements","JSON format:
-{
-  tasks: [{
-    id: string,
-    description: string,
-    dependencies: string[],
-    estimatedHours: number,
-    requiredContext: string[],
-    technicalLayer: string
-  }],
-  contextMap: {
-    taskId: contextRequirements[]
-  }
-}","Output:
-{
-  ""tasks"": [
-    {
-      ""id"": ""CART-1"",
-      ""description"": ""Create CartItem database schema"",
-      ""dependencies"": [],
-      ""estimatedHours"": 2,
-      ""requiredContext"": [
-        ""database_schema"",
-        ""data_models""
-      ],
-      ""technicalLayer"": ""database""
-    },
-    {
-      ""id"": ""CART-2"",
-      ""description"": ""Implement AddToCart API endpoint"",
-      ""dependencies"": [""CART-1""],
-      ""estimatedHours"": 3,
-      ""requiredContext"": [
-        ""api_standards"",
-        ""authentication""
-      ],
-      ""technicalLayer"": ""backend""
-    }
-  ],
-  ""contextMap"": {
-    ""CART-1"": [
-      ""PostgreSQL schema best practices"",
-      ""Current data model documentation""
-    ],
-    ""CART-2"": [
-      ""API security requirements"",
-      ""Session management patterns""
-    ]
-  }
-}","Architecture Agent,
-Context Management Agent"
-Context Management,Manages and organizes context information for tasks ensuring relevant information is available while respecting context limits,"JSON format:
-{
-  maxContextSize: number,
-  contextPriorities: {},
-  retentionRules: [],
-  compressionRules: []
+  audience: string[],
+  docTypes: [],
+  contextRules: {}
 }","JSON format:
 {
   taskId: string,
-  requiredContext: string[],
-  existingContext: {
+  componentContext: {
+    code: [],
+    architecture: {},
+    tests: []
+  },
+  existingDocs: {
     type: string,
     content: string,
-    priority: number
+    metadata: {}
   }[]
 }","Instruction Data:
 {
-  ""maxContextSize"": 4096,
-  ""contextPriorities"": {
-    ""security_requirements"": 1,
-    ""api_standards"": 2,
-    ""documentation"": 3
-  },
-  ""retentionRules"": [
-    ""keep_high_priority"",
-    ""keep_recent_usage""
-  ],
-  ""compressionRules"": [
-    ""summarize_docs"",
-    ""extract_key_points""
-  ]
-}
-
-Business Data:
-{
-  ""taskId"": ""CART-2"",
-  ""requiredContext"": [
-    ""api_standards"",
-    ""authentication"",
-    ""session_management""
-  ],
-  ""existingContext"": [
-    {
-      ""type"": ""api_standards"",
-      ""content"": ""REST API standards document v2...""",
-      ""priority"": 2
+  ""documentationStandards"": {
+    ""formats"": [
+      ""markdown"",
+      ""JSDoc"",
+      ""OpenAPI""
+    ],
+    ""templates"": {
+      ""api"": ""# API Documentation Template..."",
+      ""component"": ""# Component Documentation..."",
+      ""architecture"": ""# Architecture Documentation...""
     },
-    {
-      ""type"": ""authentication"",
-      ""content"": ""OAuth2 implementation guide...""",
-      ""priority"": 1
-    }
-  ]
-}","1. Evaluate required context against existing
-2. Apply retention rules
-3. Compress context if needed
-4. Prioritize context elements
-5. Validate against size limits
-6. Generate optimized context","JSON format:
-{
-  optimizedContext: {
-    type: string,
-    content: string,
-    priority: number
-  }[],
-  contextStats: {
-    size: number,
-    coverage: number,
-    priorities: number[]
-  },
-  missingContext: string[]
-}","Output:
-{
-  ""optimizedContext"": [
-    {
-      ""type"": ""authentication"",
-      ""content"": ""Key points: 1. Use OAuth2 for auth...""",
-      ""priority"": 1
-    },
-    {
-      ""type"": ""api_standards"",
-      ""content"": ""REST API key guidelines: 1...""",
-      ""priority"": 2
-    }
-  ],
-  ""contextStats"": {
-    ""size"": 3072,
-    ""coverage"": 0.8,
-    ""priorities"": [1, 2]
-  },
-  ""missingContext"": [
-    ""session_management""
-  ]
-}","Development Agent,
-Documentation Agent,
-Architecture Agent"
-Architecture,Defines and validates architectural decisions ensuring system consistency and pattern adherence,"JSON format:
-{
-  architecturalPatterns: [],
-  technicalStack: {},
-  qualityAttributes: [],
-  systemConstraints: {}
-}","JSON format:
-{
-  taskId: string,
-  component: {
-    name: string,
-    type: string,
-    requirements: string[]
-  },
-  existingArchitecture: {
-    components: [],
-    patterns: [],
-    decisions: []
-  }
-}","Instruction Data:
-{
-  ""architecturalPatterns"": [
-    ""microservices"",
-    ""event-driven"",
-    ""cqrs""
-  ],
-  ""technicalStack"": {
-    ""frontend"": ""Next.js"",
-    ""backend"": ""Node.js"",
-    ""database"": ""PostgreSQL"",
-    ""cache"": ""Redis""
-  },
-  ""qualityAttributes"": [
-    ""scalability"",
-    ""maintainability"",
-    ""security""
-  ],
-  ""systemConstraints"": {
-    ""maxResponseTime"": ""200ms"",
-    ""availability"": ""99.9%"",
-    ""dataResidency"": ""EU""
-  }
-}
-
-Business Data:
-{
-  ""taskId"": ""CART-2"",
-  ""component"": {
-    ""name"": ""ShoppingCartService"",
-    ""type"": ""microservice"",
     ""requirements"": [
-      ""session persistence"",
-      ""real-time inventory check"",
-      ""price calculation""
+      ""must_have_examples"",
+      ""must_have_error_handling"",
+      ""must_link_to_tests""
     ]
   },
-  ""existingArchitecture"": {
-    ""components"": [
-      ""ProductService"",
-      ""InventoryService"",
-      ""UserService""
-    ],
-    ""patterns"": [
-      ""CQRS for inventory"",
-      ""Event sourcing for orders""
-    ],
-    ""decisions"": [
-      ""ADR-001: Service Discovery"",
-      ""ADR-002: Data Consistency""
-    ]
-  }
-}","1. Analyze component requirements
-2. Check pattern compatibility
-3. Validate against constraints
-4. Identify architectural impacts
-5. Generate design decisions
-6. Document trade-offs","JSON format:
-{
-  architecturalDecision: {
-    id: string,
-    pattern: string,
-    rationale: string,
-    consequences: string[]
-  },
-  componentDesign: {
-    interfaces: [],
-    dependencies: [],
-    patterns: []
-  },
-  validationResults: {
-    constraints: boolean,
-    patterns: boolean,
-    impacts: string[]
-  }
-}","Output:
-{
-  ""architecturalDecision"": {
-    ""id"": ""ADR-003"",
-    ""pattern"": ""Event-Driven Cart Updates"",
-    ""rationale"": ""Ensures real-time inventory sync"",
-    ""consequences"": [
-      ""Eventual consistency in cart status"",
-      ""Better scalability for high load"",
-      ""Requires message retry handling""
-    ]
-  },
-  ""componentDesign"": {
-    ""interfaces"": [
-      {
-        ""name"": ""CartCommandAPI"",
-        ""type"": ""REST"",
-        ""operations"": [""add"", ""remove"", ""update""]
-      },
-      {
-        ""name"": ""CartEventStream"",
-        ""type"": ""Kafka"",
-        ""topics"": [""cart-updates"", ""inventory-check""]
-      }
-    ],
-    ""dependencies"": [
-      ""InventoryService"",
-      ""ProductService""
-    ],
-    ""patterns"": [
-      ""CQRS"",
-      ""Event Sourcing"",
-      ""Circuit Breaker""
-    ]
-  },
-  ""validationResults"": {
-    ""constraints"": true,
-    ""patterns"": true,
-    ""impacts"": [
-      ""Requires cache implementation"",
-      ""New event stream needed"",
-      ""Update monitoring system""
-    ]
-  }
-}","Development Agent,
-Documentation Agent,
-Context Management Agent"
-Development,Generates implementation code following architectural decisions and coding standards,"JSON format:
-{
-  codingStandards: {},
-  patterns: [],
-  testRequirements: {},
-  maxChunkSize: number,
-  formatRules: {}
-}","JSON format:
-{
-  taskId: string,
-  architecturalContext: {},
-  codeContext: {
-    dependencies: [],
-    existingCode: {},
-    interfaces: []
-  }
-}","Instruction Data:
-{
-  ""codingStandards"": {
-    ""language"": ""TypeScript"",
-    ""style"": ""Airbnb"",
-    ""maxComplexity"": 10,
-    ""namingConventions"": {
-      ""class"": ""PascalCase"",
-      ""method"": ""camelCase"",
-      ""constant"": ""UPPER_CASE""
-    }
-  },
-  ""patterns"": [
-    ""repository"",
-    ""dependency-injection"",
-    ""factory""
+  ""audience"": [
+    ""developers"",
+    ""system_architects"",
+    ""maintainers""
   ],
-  ""testRequirements"": {
-    ""coverage"": 80,
-    ""types"": [""unit"", ""integration""],
-    ""frameworks"": [""jest"", ""supertest""]
-  },
-  ""maxChunkSize"": 500,
-  ""formatRules"": {
-    ""indentation"": ""spaces"",
-    ""maxLineLength"": 80,
-    ""trailingComma"": ""es5""
+  ""docTypes"": [
+    ""api"",
+    ""implementation"",
+    ""architecture"",
+    ""testing""
+  ],
+  ""contextRules"": {
+    ""code_snippets"": ""include_relevant_only"",
+    ""diagrams"": ""mermaid_preferred"",
+    ""examples"": ""must_be_runnable""
   }
 }
 
 Business Data:
 {
   ""taskId"": ""CART-2"",
-  ""architecturalContext"": {
-    ""pattern"": ""Event-Driven Cart Updates"",
-    ""interfaces"": [
-      {
-        ""name"": ""CartCommandAPI"",
-        ""type"": ""REST"",
-        ""operations"": [""add"", ""remove"", ""update""]
-      }
-    ]
-  },
-  ""codeContext"": {
-    ""dependencies"": [
-      ""@nestjs/common"",
-      ""@nestjs/microservices"",
-      ""@types/node""
-    ],
-    ""existingCode"": {
-      ""models"": [""Cart.ts"", ""CartItem.ts""],
-      ""services"": [""CartService.ts""]
-    },
-    ""interfaces"": [
-      ""ICartRepository"",
-      ""ICartEventPublisher""
-    ]
-  }
-}","1. Parse architectural context
-2. Analyze code dependencies
-3. Apply coding standards
-4. Generate implementation
-5. Add tests
-6. Format output","JSON format:
-{
-  implementation: {
-    files: [{
-      path: string,
-      content: string,
-      type: string
-    }],
-    tests: [{
-      path: string,
-      content: string,
-      type: string
-    }]
-  },
-  metrics: {
-    complexity: number,
-    coverage: number,
-    lintResults: []
-  }
-}","Output:
-{
-  ""implementation"": {
-    ""files"": [
+  ""componentContext"": {
+    ""code"": [
       {
         ""path"": ""src/cart/controllers/cart.controller.ts"",
-        ""content"": ""import { Controller, Post, Body } from '@nestjs/common';
-import { CartService } from '../services/cart.service';
-...
-@Controller('cart')
-export class CartController {
-  constructor(private readonly cartService: CartService) {}
-...
-}"",
-        ""type"": ""controller""
-      },
-      {
-        ""path"": ""src/cart/services/cart.service.ts"",
         ""content"": ""..."",
-        ""type"": ""service""
+        ""type"": ""controller""
       }
     ],
+    ""architecture"": {
+      ""pattern"": ""Event-Driven Cart Updates"",
+      ""decisions"": [""ADR-003""]
+    },
     ""tests"": [
       {
         ""path"": ""src/cart/controllers/cart.controller.spec.ts"",
-        ""content"": ""import { Test } from '@nestjs/testing';
-import { CartController } from './cart.controller';
-...
-describe('CartController', () => {
-..."",
         ""type"": ""unit""
       }
     ]
   },
-  ""metrics"": {
-    ""complexity"": 8,
-    ""coverage"": 85,
-    ""lintResults"": [
-      {
-        ""rule"": ""max-lines"",
-        ""status"": ""pass""
+  ""existingDocs"": [
+    {
+      ""type"": ""api"",
+      ""content"": ""# Cart API Documentation..."",
+      ""metadata"": {
+        ""version"": ""1.0.0"",
+        ""lastUpdated"": ""2025-02-01""
       }
-    ]
+    }
+  ]
+}","1. Analyze component context
+2. Identify documentation needs
+3. Apply documentation standards
+4. Generate documentation
+5. Validate requirements
+6. Update existing docs","JSON format:
+{
+  documentation: {
+    files: [{
+      path: string,
+      content: string,
+      type: string,
+      metadata: {}
+    }],
+    coverage: {
+      api: number,
+      implementation: number,
+      architecture: number
+    }
+  },
+  validation: {
+    requirements: [],
+    completeness: number,
+    quality: number
+  }
+}","Output:
+{
+  ""documentation"": {
+    ""files"": [
+      {
+        ""path"": ""docs/api/cart-service.md"",
+        ""content"": ""# Cart Service API\n\n## Overview\nThe Cart Service provides REST endpoints for managing shopping cart operations...\n\n## Endpoints\n\n### POST /cart/items\nAdds an item to the shopping cart.\n\n#### Request\n```json\n{\n  ""itemId"": ""string"",\n  ""quantity"": ""number""\n}\n```\n\n#### Response\n```json\n{\n  ""cartId"": ""string"",\n  ""items"": []\n}\n```\n\n## Error Handling\n...\n"",
+        ""type"": ""api"",
+        ""metadata"": {
+          ""version"": ""1.1.0"",
+          ""generated"": ""2025-02-06"",
+          ""coverage"": ""100%""
+        }
+      },
+      {
+        ""path"": ""docs/architecture/cart-events.md"",
+        ""content"": ""# Cart Event System\n\n## Event Flow\n```mermaid\nsequenceDiagram\n  participant C as CartService\n  participant K as Kafka\n  participant I as InventoryService\n  ...\n```\n"",
+        ""type"": ""architecture"",
+        ""metadata"": {
+          ""pattern"": ""Event-Driven"",
+          ""adr"": ""ADR-003""
+        }
+      }
+    ],
+    ""coverage"": {
+      ""api"": 100,
+      ""implementation"": 90,
+      ""architecture"": 95
+    }
+  },
+  ""validation"": {
+    ""requirements"": [
+      ""has_examples"": true,
+      ""has_error_handling"": true,
+      ""has_test_links"": true
+    ],
+    ""completeness"": 95,
+    ""quality"": 90
   }
 }","Quality Assurance Agent,
-Documentation Agent"
+Task Decomposition Agent,
+Context Management Agent"
