@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Operation",
+  "description": "Schema for DevSwarm operations",
+  "type": "object",
+  "required": ["type", "target", "version", "metadata"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["READ", "APPEND", "UPDATE", "DELETE"]
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^agents/definitions/[a-z_]+(/.*)?$"
+    },
+    "content": {
+      "type": ["string", "null"]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "checksum": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["timestamp", "agent", "reason"],
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
