@@ -188,3 +188,144 @@ Business Data:
 }","Development Agent,
 Documentation Agent,
 Architecture Agent"
+Architecture,Defines and validates architectural decisions ensuring system consistency and pattern adherence,"JSON format:
+{
+  architecturalPatterns: [],
+  technicalStack: {},
+  qualityAttributes: [],
+  systemConstraints: {}
+}","JSON format:
+{
+  taskId: string,
+  component: {
+    name: string,
+    type: string,
+    requirements: string[]
+  },
+  existingArchitecture: {
+    components: [],
+    patterns: [],
+    decisions: []
+  }
+}","Instruction Data:
+{
+  ""architecturalPatterns"": [
+    ""microservices"",
+    ""event-driven"",
+    ""cqrs""
+  ],
+  ""technicalStack"": {
+    ""frontend"": ""Next.js"",
+    ""backend"": ""Node.js"",
+    ""database"": ""PostgreSQL"",
+    ""cache"": ""Redis""
+  },
+  ""qualityAttributes"": [
+    ""scalability"",
+    ""maintainability"",
+    ""security""
+  ],
+  ""systemConstraints"": {
+    ""maxResponseTime"": ""200ms"",
+    ""availability"": ""99.9%"",
+    ""dataResidency"": ""EU""
+  }
+}
+
+Business Data:
+{
+  ""taskId"": ""CART-2"",
+  ""component"": {
+    ""name"": ""ShoppingCartService"",
+    ""type"": ""microservice"",
+    ""requirements"": [
+      ""session persistence"",
+      ""real-time inventory check"",
+      ""price calculation""
+    ]
+  },
+  ""existingArchitecture"": {
+    ""components"": [
+      ""ProductService"",
+      ""InventoryService"",
+      ""UserService""
+    ],
+    ""patterns"": [
+      ""CQRS for inventory"",
+      ""Event sourcing for orders""
+    ],
+    ""decisions"": [
+      ""ADR-001: Service Discovery"",
+      ""ADR-002: Data Consistency""
+    ]
+  }
+}","1. Analyze component requirements
+2. Check pattern compatibility
+3. Validate against constraints
+4. Identify architectural impacts
+5. Generate design decisions
+6. Document trade-offs","JSON format:
+{
+  architecturalDecision: {
+    id: string,
+    pattern: string,
+    rationale: string,
+    consequences: string[]
+  },
+  componentDesign: {
+    interfaces: [],
+    dependencies: [],
+    patterns: []
+  },
+  validationResults: {
+    constraints: boolean,
+    patterns: boolean,
+    impacts: string[]
+  }
+}","Output:
+{
+  ""architecturalDecision"": {
+    ""id"": ""ADR-003"",
+    ""pattern"": ""Event-Driven Cart Updates"",
+    ""rationale"": ""Ensures real-time inventory sync"",
+    ""consequences"": [
+      ""Eventual consistency in cart status"",
+      ""Better scalability for high load"",
+      ""Requires message retry handling""
+    ]
+  },
+  ""componentDesign"": {
+    ""interfaces"": [
+      {
+        ""name"": ""CartCommandAPI"",
+        ""type"": ""REST"",
+        ""operations"": [""add"", ""remove"", ""update""]
+      },
+      {
+        ""name"": ""CartEventStream"",
+        ""type"": ""Kafka"",
+        ""topics"": [""cart-updates"", ""inventory-check""]
+      }
+    ],
+    ""dependencies"": [
+      ""InventoryService"",
+      ""ProductService""
+    ],
+    ""patterns"": [
+      ""CQRS"",
+      ""Event Sourcing"",
+      ""Circuit Breaker""
+    ]
+  },
+  ""validationResults"": {
+    ""constraints"": true,
+    ""patterns"": true,
+    ""impacts"": [
+      ""Requires cache implementation"",
+      ""New event stream needed"",
+      ""Update monitoring system""
+    ]
+  }
+}","Development Agent,
+Documentation Agent,
+Context Management Agent"
