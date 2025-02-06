@@ -1,0 +1,94 @@
+Agent Type,Description,Instruction Data Format,Business Data Format,Input Example,Prompt Logic,Output Format,Output Example,Next Agent Options
+Task Decomposition,Breaks down user stories into atomic tasks with clear dependencies and context requirements,"JSON format:
+{
+  constraints: [],
+  projectContext: {},
+  decompositionRules: []
+}","JSON format:
+{
+  userStory: string,
+  acceptanceCriteria: string[],
+  complexity: number,
+  priority: string
+}","Instruction Data:
+{
+  ""constraints"": [
+    ""max_task_size: 4 hours"",
+    ""min_test_coverage: 80%""
+  ],
+  ""projectContext"": {
+    ""framework"": ""Next.js"",
+    ""database"": ""PostgreSQL""
+  },
+  ""decompositionRules"": [
+    ""split_by_technical_layer"",
+    ""identify_dependencies""
+  ]
+}
+
+Business Data:
+{
+  ""userStory"": ""As a customer, I want to add items to my shopping cart so that I can purchase multiple items at once"",
+  ""acceptanceCriteria"": [
+    ""Can add single item"",
+    ""Can modify quantity"",
+    ""Cart persists across sessions""
+  ],
+  ""complexity"": 3,
+  ""priority"": ""high""
+}","1. Analyze user story against project context
+2. Apply decomposition rules
+3. Validate against constraints
+4. Generate atomic tasks
+5. Identify dependencies
+6. Calculate context requirements","JSON format:
+{
+  tasks: [{
+    id: string,
+    description: string,
+    dependencies: string[],
+    estimatedHours: number,
+    requiredContext: string[],
+    technicalLayer: string
+  }],
+  contextMap: {
+    taskId: contextRequirements[]
+  }
+}","Output:
+{
+  ""tasks"": [
+    {
+      ""id"": ""CART-1"",
+      ""description"": ""Create CartItem database schema"",
+      ""dependencies"": [],
+      ""estimatedHours"": 2,
+      ""requiredContext"": [
+        ""database_schema"",
+        ""data_models""
+      ],
+      ""technicalLayer"": ""database""
+    },
+    {
+      ""id"": ""CART-2"",
+      ""description"": ""Implement AddToCart API endpoint"",
+      ""dependencies"": [""CART-1""],
+      ""estimatedHours"": 3,
+      ""requiredContext"": [
+        ""api_standards"",
+        ""authentication""
+      ],
+      ""technicalLayer"": ""backend""
+    }
+  ],
+  ""contextMap"": {
+    ""CART-1"": [
+      ""PostgreSQL schema best practices"",
+      ""Current data model documentation""
+    ],
+    ""CART-2"": [
+      ""API security requirements"",
+      ""Session management patterns""
+    ]
+  }
+}","Architecture Agent,
+Context Management Agent"
