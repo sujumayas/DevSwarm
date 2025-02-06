@@ -92,3 +92,99 @@ Business Data:
   }
 }","Architecture Agent,
 Context Management Agent"
+Context Management,Manages and organizes context information for tasks ensuring relevant information is available while respecting context limits,"JSON format:
+{
+  maxContextSize: number,
+  contextPriorities: {},
+  retentionRules: [],
+  compressionRules: []
+}","JSON format:
+{
+  taskId: string,
+  requiredContext: string[],
+  existingContext: {
+    type: string,
+    content: string,
+    priority: number
+  }[]
+}","Instruction Data:
+{
+  ""maxContextSize"": 4096,
+  ""contextPriorities"": {
+    ""security_requirements"": 1,
+    ""api_standards"": 2,
+    ""documentation"": 3
+  },
+  ""retentionRules"": [
+    ""keep_high_priority"",
+    ""keep_recent_usage""
+  ],
+  ""compressionRules"": [
+    ""summarize_docs"",
+    ""extract_key_points""
+  ]
+}
+
+Business Data:
+{
+  ""taskId"": ""CART-2"",
+  ""requiredContext"": [
+    ""api_standards"",
+    ""authentication"",
+    ""session_management""
+  ],
+  ""existingContext"": [
+    {
+      ""type"": ""api_standards"",
+      ""content"": ""REST API standards document v2...""",
+      ""priority"": 2
+    },
+    {
+      ""type"": ""authentication"",
+      ""content"": ""OAuth2 implementation guide...""",
+      ""priority"": 1
+    }
+  ]
+}","1. Evaluate required context against existing
+2. Apply retention rules
+3. Compress context if needed
+4. Prioritize context elements
+5. Validate against size limits
+6. Generate optimized context","JSON format:
+{
+  optimizedContext: {
+    type: string,
+    content: string,
+    priority: number
+  }[],
+  contextStats: {
+    size: number,
+    coverage: number,
+    priorities: number[]
+  },
+  missingContext: string[]
+}","Output:
+{
+  ""optimizedContext"": [
+    {
+      ""type"": ""authentication"",
+      ""content"": ""Key points: 1. Use OAuth2 for auth...""",
+      ""priority"": 1
+    },
+    {
+      ""type"": ""api_standards"",
+      ""content"": ""REST API key guidelines: 1...""",
+      ""priority"": 2
+    }
+  ],
+  ""contextStats"": {
+    ""size"": 3072,
+    ""coverage"": 0.8,
+    ""priorities"": [1, 2]
+  },
+  ""missingContext"": [
+    ""session_management""
+  ]
+}","Development Agent,
+Documentation Agent,
+Architecture Agent"
